@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedStock AI - AI Predictions & Outbreak Tracking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --medical-blue: #0066cc;
+            --medical-teal: #00a896;
+            --medical-green: #52b788;
+            --medical-light: #e8f4f8;
+            --medical-dark: #003d5b;
+            --warning-amber: #ff9800;
+            --critical-red: #e63946;
+            --purple-accent: #8e44ad;
+            --sidebar-width: 260px;
+            --topbar-height: 70px;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+        }
+
+        body { 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            background: linear-gradient(135deg, var(--medical-light) 0%, #f8f9fa 100%);
+            overflow: hidden;
+        }
+        
+        /* Top Navigation Bar */
+        .top-bar { 
+            height: var(--topbar-height); 
+            background: linear-gradient(90deg, var(--medical-dark) 0%, var(--medical-blue) 100%);
+            color: white; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            padding: 0 30px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+            position: fixed; 
+            width: 100%; 
+            z-index: 1000; 
+        }
+
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .top-bar h1 { 
+            font-size: 1.8rem; 
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .org-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--medical-teal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .main-container { 
+            display: flex; 
+            margin-top: var(--topbar-height); 
+            height: calc(100vh - var(--topbar-height)); 
+        }
+
+        /* Sidebar */
+        .sidebar { 
+            width: var(--sidebar-width); 
+            background: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            padding-top: 20px; 
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            margin-bottom: 25px;
+        }
+
+        .sidebar-title {
+            padding: 10px 25px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #999;
+            letter-spacing: 1px;
+        }
+
+        .sidebar a { 
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 25px; 
+            color: #5f6368; 
+            text-decoration: none; 
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            font-weight: 500;
+        }
+
+        .sidebar a i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .sidebar a:hover { 
+            background: rgba(0, 168, 150, 0.05);
+            color: var(--medical-teal);
+        }
+
+        .sidebar a.active { 
+            background: linear-gradient(90deg, rgba(0, 102, 204, 0.1) 0%, rgba(0, 168, 150, 0.1) 100%);
+            color: var(--medical-blue);
+            border-left-color: var(--medical-teal);
+            font-weight: 600;
+        }
+
+        /* Content Area */
+        .content { 
+            flex-grow: 1; 
+            padding: 30px; 
+            overflow-y: auto;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .page-title h2 {
+            font-size: 2rem;
+            color: var(--medical-dark);
+            font-weight: 700;
+        }
+
+        .page-title .icon-badge {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, var(--purple-accent) 0%, #9b59b6 100%);
+            color: white;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.7rem;
+        }
+
+        /* Main Grid */
+        .ai-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--medical-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-teal) 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .refresh-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+        }
+
+        /* Outbreak Card */
+        .outbreak-item {
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.05) 0%, rgba(255, 107, 53, 0.05) 100%);
+            border-left: 4px solid var(--critical-red);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .outbreak-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .outbreak-title {
+            font-weight: 700;
+            color: var(--medical-dark);
+            margin-bottom: 8px;
+            font-size: 1.05rem;
+        }
+
+        .outbreak-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 8px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .outbreak-desc {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        .outbreak-link {
+            display: inline-block;
+            margin-top: 8px;
+            color: var(--medical-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .outbreak-link:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .loading i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Chatbot */
+        .chatbot-container {
+            display: flex;
+            flex-direction: column;
+            height: 600px;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .chat-message {
+            margin-bottom: 15px;
+            display: flex;
+            gap: 12px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+
+        .message-avatar.user {
+            background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-teal) 100%);
+            color: white;
+        }
+
+        .message-avatar.bot {
+            background: linear-gradient(135deg, var(--purple-accent) 0%, #9b59b6 100%);
+            color: white;
+        }
+
+        .message-content {
+            flex: 1;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .message-content.user {
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1) 0%, rgba(0, 168, 150, 0.1) 100%);
+        }
+
+        .message-text {
+            color: #333;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .chat-input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .chat-input:focus {
+            border-color: var(--purple-accent);
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(142, 68, 173, 0.15);
+        }
+
+        .outbreak-item {
+            background: #fff;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .outbreak-title {
+            font-weight: 700;
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .badge-date {
+            font-size: 0.75rem;
+            background: #f0f2f5;
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: #666;
+        }
+
+        .meta-tag {
+            display: inline-block;
+            font-size: 0.85rem;
+            margin: 8px 10px 8px 0;
+            color: #555;
+        }
+
+        .cure-tag {
+            color: #27ae60;
+            font-weight: 600;
+            background: #e8f5e9;
+            padding: 2px 10px;
+            border-radius: 4px;
+        }
+
+        .outbreak-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .chat-send-btn {
+            background: linear-gradient(135deg, var(--purple-accent) 0%, #9b59b6 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .chat-send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(142, 68, 173, 0.3);
+        }
+
+        .chat-send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Suggestions */
+        .quick-questions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .quick-question-btn {
+            background: white;
+            border: 2px solid var(--purple-accent);
+            color: var(--purple-accent);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quick-question-btn:hover {
+            background: var(--purple-accent);
+            color: white;
+        }
+
+        /* Info Box */
+        .info-box {
+            background: linear-gradient(135deg, rgba(142, 68, 173, 0.1) 0%, rgba(155, 89, 182, 0.1) 100%);
+            border-left: 4px solid var(--purple-accent);
+            padding: 15px 20px;
+            border-radius: 10px;
+        margin-bottom: 20px;
+            }
+        .outbreak-item {
+        background: #ffffff;
+        border-left: 4px solid #3498db;
+        padding: 1.2rem;
+        margin-bottom: 1rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .outbreak-title {
+        font-weight: 700;
+        color: #2c3e50;
+        font-size: 1.05rem;
+    }
+
+    .badge-date {
+        font-size: 0.75rem;
+        color: #7f8c8d;
+        background: #ecf0f1;
+        padding: 2px 10px;
+        border-radius: 20px;
+    }
+
+    .outbreak-meta {
+        margin: 10px 0;
+    }
+
+    .meta-tag {
+        font-size: 0.85rem;
+        margin-right: 15px;
+        color: #34495e;
+    }
+
+    .cure-tag {
+        color: #27ae60;
+        font-weight: 600;
+    }
+
+    .outbreak-link {
+        font-size: 0.85rem;
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .info-box-title {
+            font-weight: 700;
+            color: var(--medical-dark);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-box-text {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .ai-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: fixed;
+                left: -260px;
+                transition: left 0.3s ease;
+                height: calc(100vh - var(--topbar-height));
+                z-index: 999;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .chatbot-container {
+                height: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Top Navigation Bar -->
+<div class="top-bar">
+    <div class="top-bar-left">
+        <h1>
+            <i class="fas fa-heartbeat"></i>
+            MedStock AI
+        </h1>
+        <div class="org-badge">
+            <i class="fas fa-hospital"></i>
+            <span>ORG: {{ org_code }}</span>
+        </div>
+    </div>
+    <div class="top-bar-right">
+        <div class="user-info">
+            <div class="user-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <span>Admin</span>
+        </div>
+        <button class="logout-btn" onclick="window.location.href='/logout'">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+</div>
+
+<div class="main-container">
+    <!-- Sidebar Navigation -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-section">
+            <div class="sidebar-title">Main Menu</div>
+            <a href="/home?org_code={{ org_code }}">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/inventory?org_code={{ org_code }}">
+                <i class="fas fa-boxes"></i>
+                <span>Inventory</span>
+            </a>
+            <a href="/medicine?org_code={{ org_code }}">
+                <i class="fas fa-pills"></i>
+                <span>Medicines</span>
+            </a>
+            <a href="/staff?org_code={{ org_code }}">
+                <i class="fas fa-user-nurse"></i>
+                <span>Staff</span>
+            </a>
+            <a href="/alerts?org_code={{ org_code }}">
+                <i class="fas fa-bell"></i>
+                <span>Alerts</span>
+            </a>
+            <a class="nav-link {% if active_page == 'community' %}active{% endif %}" 
+                href="/community?org_code={{ org_code }}">
+                    <div class="d-flex align-items-center">
+                        <span class="nav-icon me-2">🌐</span>
+                        <span class="nav-text">Community Hub</span>
+                    </div>
+            </a>
+        </div>
+        
+        <div class="sidebar-section">
+            <div class="sidebar-title">Chatbot</div>
+            
+            <a href="/predictions?org_code={{ org_code }}" class="active">
+                <i class="fas fa-brain"></i>
+                <span>AI Predictions</span>
+            </a>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">Settings</div>
+            <a href="/settings?org_code={{ org_code }}">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="/help?org_code={{ org_code }}">
+                <i class="fas fa-question-circle"></i>
+                <span>Help & Support</span>
+            </a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="page-header">
+            <div class="page-title">
+                <div class="icon-badge">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div>
+                    <h2>AI Predictions & Outbreak Tracking</h2>
+                    <p style="color: #666; margin-top: 5px;">Global Disease Surveillance & Intelligent Chatbot</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-grid">
+            <!-- WHO Outbreak Tracking -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-globe-americas"></i>
+                        WHO Disease Outbreak News
+                    </div>
+                    <button class="refresh-btn" onclick="refreshOutbreaks()">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fas fa-info-circle"></i>
+                        Live Global Surveillance
+                    </div>
+                    <div class="info-box-text">
+                        Real-time disease outbreak information from WHO. Stay informed about global health emergencies that may affect your inventory planning.
+                    </div>
+                </div>
+
+                <div id="outbreaksContainer">
+                    <div class="loading">
+                        <i class="fas fa-spinner"></i>
+                        <p>Loading outbreak data...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Chatbot -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fas fa-comments"></i>
+                        AI Medical Assistant
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <div class="info-box-title">
+                        <i class="fas fa-robot"></i>
+                        Intelligent Data Analysis
+                    </div>
+                    <div class="info-box-text">
+                        Ask questions about your inventory, medicines, patients, and staffing. The AI can analyze patterns across your databases.
+                    </div>
+                </div>
+
+                <div class="quick-questions">
+                    <button class="quick-question-btn" onclick="askQuestion('Why is paracetamol demand high?')">
+                        Why is paracetamol demand high?
+                    </button>
+                    <button class="quick-question-btn" onclick="askQuestion('Which medicines are low in stock?')">
+                        Low stock medicines?
+                    </button>
+                    <button class="quick-question-btn" onclick="askQuestion('How many ICU patients do we have?')">
+                        ICU patient count?
+                    </button>
+                    <button class="quick-question-btn" onclick="askQuestion('Show top diagnoses')">
+                        Top diagnoses?
+                    </button>
+                </div>
+
+                <div class="chatbot-container">
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-message">
+                            <div class="message-avatar bot">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <div class="message-content">
+                                <div class="message-text">
+                                    Hello! I'm your AI Medical Assistant. I can help you analyze your inventory, medicines, patient data, and more. What would you like to know?
+                                </div>
+                                <div class="message-time">Just now</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <input type="text" 
+                                class="chat-input" 
+                                id="chatInput" 
+                                placeholder="Ask about inventory, medicines, patients, staff..."
+                                onkeypress="handleKeyPress(event)">
+                        <button class="chat-send-btn" id="sendBtn" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const orgCode = "{{ org_code }}";
+
+    // Load WHO outbreaks on page load
+    window.addEventListener('load', () => {
+        loadOutbreaks();
+    });
+
+async function loadOutbreaks() {
+    const container = document.getElementById('outbreaksContainer');
+    
+    container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Accessing WHO Live API...</p></div>';
+
+    try {
+        const response = await fetch('/api/who_outbreaks');
+        const data = await response.json();
+
+        if (data.status === 'success' && data.outbreaks.length > 0) {
+            container.innerHTML = '';
+            
+            data.outbreaks.forEach(ob => {
+                const item = document.createElement('div');
+                item.className = 'outbreak-item';
+                item.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:start;">
+                        <div class="outbreak-title">${ob.Disease}</div>
+                        <span class="badge-date">${ob.Date}</span>
+                    </div>
+                    <div class="outbreak-meta" style="margin-top: 8px;">
+                        <span class="meta-tag"><i class="fas fa-map-marker-alt"></i> ${ob.Country}</span>
+                        <span class="meta-tag cure-tag" style="color: #27ae60; font-weight: 600;">
+                            <i class="fas fa-hand-holding-medical"></i> ${ob.Cure}
+                        </span>
+                    </div>
+                    <a href="${ob.Link}" target="_blank" class="outbreak-link" style="display:inline-block; margin-top:10px; font-size:0.85rem; color:#007eb3; text-decoration:none; font-weight:bold;">
+                        View Official WHO Report <i class="fas fa-external-link-alt" style="font-size:0.7rem;"></i>
+                    </a>
+                `;
+                container.appendChild(item);
+            });
+        } else {
+            container.innerHTML = '<p style="padding: 20px; text-align: center;">No current outbreaks detected in the API.</p>';
+        }
+    } catch (error) {
+        console.error("API Error:", error);
+        container.innerHTML = '<p style="color:red; padding:20px;">Unable to connect to WHO servers. Check your backend logs.</p>';
+    }
+}
+
+    function refreshOutbreaks() {
+        loadOutbreaks();
+    }
+
+    // Chatbot functions
+    function addMessage(text, isUser) {
+        const messagesContainer = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'chat-message';
+        
+        const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        
+        messageDiv.innerHTML = `
+            <div class="message-avatar ${isUser ? 'user' : 'bot'}">
+                <i class="fas fa-${isUser ? 'user' : 'robot'}"></i>
+            </div>
+            <div class="message-content ${isUser ? 'user' : ''}">
+                <div class="message-text">${text}</div>
+                <div class="message-time">${time}</div>
+            </div>
+        `;
+        
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const question = input.value.trim();
+        
+        if (!question) return;
+        addMessage(question, true);
+        input.value = '';
+        
+        input.disabled = true;
+        sendBtn.disabled = true;
+        sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Thinking...';
+        
+        try {
+            const response = await fetch('/api/chatbot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    question: question,
+                    org_code: orgCode
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.status === 'success') {
+                addMessage(data.answer, false);
+            } else {
+                addMessage('Sorry, I encountered an error processing your question. Please try again.', false);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            addMessage('Connection error. Please check your internet connection and try again.', false);
+        } finally {
+            input.disabled = false;
+            sendBtn.disabled = false;
+            sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send';
+            input.focus();
+        }
+    }
+
+    function askQuestion(question) {
+        document.getElementById('chatInput').value = question;
+        sendMessage();
+    }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    }
+</script>
+
+</body>
+</html>

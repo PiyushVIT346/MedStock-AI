@@ -1,0 +1,151 @@
+Item_ID,Vendor_Name,Medicine_Name,Stock_Date,Current_Stock,Used_This_Month
+RX-001,PharmaLine,Amoxicillin,2026-02-05,510,115
+RX-002,BioHealth Co.,Amoxicillin,2026-02-12,340,290
+RX-003,Global Meds,Ibuprofen,2026-02-02,980,460
+RX-004,CureAll Inc.,Ibuprofen,2026-02-15,210,175
+RX-005,PureLife Ltd,Paracetamol,2026-02-08,1550,880
+RX-006,Zenith Pharma,Paracetamol,2026-02-20,590,210
+RX-007,PharmaLine,Azithromycin,2026-02-03,160,50
+RX-008,MedVantage,Azithromycin,2026-02-14,215,105
+RX-009,BioHealth Co.,Ciprofloxacin,2026-02-11,310,90
+RX-010,Global Meds,Ciprofloxacin,2026-02-19,440,410
+RX-011,CureAll Inc.,Aspirin,2026-02-07,820,240
+RX-012,Zenith Pharma,Aspirin,2026-02-25,290,55
+RX-013,PureLife Ltd,Cephalexin,2026-02-04,250,125
+RX-014,MedVantage,Cephalexin,2026-02-18,185,180
+RX-015,PharmaLine,Doxycycline,2026-02-09,390,215
+RX-016,BioHealth Co.,Doxycycline,2026-02-21,540,110
+RX-017,HeartCare Sys,Metformin,2026-02-01,1250,620
+RX-018,Vitality Meds,Metformin,2026-02-10,790,760
+RX-019,Apex Pharma,Atorvastatin,2026-02-05,520,225
+RX-020,HeartCare Sys,Atorvastatin,2026-02-22,410,390
+RX-021,Vitality Meds,Lisinopril,2026-02-06,640,150
+RX-022,Apex Pharma,Lisinopril,2026-02-17,310,280
+RX-023,BlueSky Pharma,Amlodipine,2026-02-02,920,310
+RX-024,HeartCare Sys,Amlodipine,2026-02-28,205,145
+RX-025,Vitality Meds,Losartan,2026-02-14,560,410
+RX-026,BlueSky Pharma,Losartan,2026-02-24,990,110
+RX-027,Apex Pharma,Metoprolol,2026-02-13,470,210
+RX-028,HeartCare Sys,Metoprolol,2026-02-19,355,350
+RX-029,BlueSky Pharma,Simvastatin,2026-02-09,730,175
+RX-030,Vitality Meds,Simvastatin,2026-02-27,510,45
+RX-031,Apex Pharma,Gabapentin,2026-02-07,610,590
+RX-032,BlueSky Pharma,Gabapentin,2026-02-15,410,25
+RX-033,HeartCare Sys,Omeprazole,2026-02-11,1150,940
+RX-034,AeroHealth,Albuterol,2026-02-03,195,190
+RX-035,Relief Corp,Albuterol,2026-02-20,155,45
+RX-036,Nova Pharma,Cetirizine,2026-02-05,1020,790
+RX-037,AeroHealth,Cetirizine,2026-02-18,610,540
+RX-038,Relief Corp,Loratadine,2026-02-02,840,310
+RX-039,Nova Pharma,Loratadine,2026-02-25,405,375
+RX-040,AeroHealth,Fluticasone,2026-02-12,310,215
+RX-041,Relief Corp,Fluticasone,2026-02-27,105,15
+RX-042,Nova Pharma,Prednisone,2026-02-08,510,440
+RX-043,AeroHealth,Prednisone,2026-02-22,305,115
+RX-044,Relief Corp,Montelukast,2026-02-10,445,430
+RX-045,Nova Pharma,Montelukast,2026-02-26,205,195
+RX-046,AeroHealth,Hydrochlorothiazide,2026-02-04,710,340
+RX-047,Relief Corp,Hydrochlorothiazide,2026-02-16,490,470
+RX-048,Nova Pharma,Pantoprazole,2026-02-06,890,610
+RX-049,AeroHealth,Pantoprazole,2026-02-19,405,385
+RX-050,Relief Corp,Levothyroxine,2026-02-01,1190,1080
+RX-051,PharmaLine,Amoxicillin,2026-02-06,490,130
+RX-052,BioHealth Co.,Amoxicillin,2026-02-13,360,310
+RX-053,Global Meds,Ibuprofen,2026-02-03,1010,440
+RX-054,CureAll Inc.,Ibuprofen,2026-02-16,195,185
+RX-055,PureLife Ltd,Paracetamol,2026-02-09,1480,920
+RX-056,Zenith Pharma,Paracetamol,2026-02-21,610,195
+RX-057,PharmaLine,Azithromycin,2026-02-04,145,40
+RX-058,MedVantage,Azithromycin,2026-02-15,225,115
+RX-059,BioHealth Co.,Ciprofloxacin,2026-02-12,290,80
+RX-060,Global Meds,Ciprofloxacin,2026-02-20,460,390
+RX-061,CureAll Inc.,Aspirin,2026-02-08,790,260
+RX-062,Zenith Pharma,Aspirin,2026-02-26,310,45
+RX-063,PureLife Ltd,Cephalexin,2026-02-05,235,135
+RX-064,MedVantage,Cephalexin,2026-02-19,175,170
+RX-065,PharmaLine,Doxycycline,2026-02-10,410,200
+RX-066,BioHealth Co.,Doxycycline,2026-02-22,560,95
+RX-067,HeartCare Sys,Metformin,2026-02-02,1180,610
+RX-068,Vitality Meds,Metformin,2026-02-11,810,740
+RX-069,Apex Pharma,Atorvastatin,2026-02-06,490,235
+RX-070,HeartCare Sys,Atorvastatin,2026-02-23,390,380
+RX-071,Vitality Meds,Lisinopril,2026-02-07,660,135
+RX-072,Apex Pharma,Lisinopril,2026-02-18,290,285
+RX-073,BlueSky Pharma,Amlodipine,2026-02-03,890,330
+RX-074,HeartCare Sys,Amlodipine,2026-02-27,195,155
+RX-075,Vitality Meds,Losartan,2026-02-15,540,390
+RX-076,BlueSky Pharma,Losartan,2026-02-25,1010,90
+RX-077,Apex Pharma,Metoprolol,2026-02-14,490,190
+RX-078,HeartCare Sys,Metoprolol,2026-02-20,365,355
+RX-079,BlueSky Pharma,Simvastatin,2026-02-10,710,185
+RX-080,Vitality Meds,Simvastatin,2026-02-26,490,55
+RX-081,Apex Pharma,Gabapentin,2026-02-08,590,570
+RX-082,BlueSky Pharma,Gabapentin,2026-02-16,390,30
+RX-083,HeartCare Sys,Omeprazole,2026-02-12,1120,960
+RX-084,AeroHealth,Albuterol,2026-02-04,205,200
+RX-085,Relief Corp,Albuterol,2026-02-21,145,35
+RX-086,Nova Pharma,Cetirizine,2026-02-06,980,810
+RX-087,AeroHealth,Cetirizine,2026-02-19,590,560
+RX-088,Relief Corp,Loratadine,2026-02-03,860,290
+RX-089,Nova Pharma,Loratadine,2026-02-26,395,385
+RX-090,AeroHealth,Fluticasone,2026-02-13,290,205
+RX-091,Relief Corp,Fluticasone,2026-02-28,95,12
+RX-092,Nova Pharma,Prednisone,2026-02-09,490,460
+RX-093,AeroHealth,Prednisone,2026-02-23,295,125
+RX-094,Relief Corp,Montelukast,2026-02-11,460,450
+RX-095,Nova Pharma,Montelukast,2026-02-28,210,205
+RX-096,AeroHealth,Hydrochlorothiazide,2026-02-05,690,360
+RX-097,Relief Corp,Hydrochlorothiazide,2026-02-17,510,490
+RX-098,Nova Pharma,Pantoprazole,2026-02-07,910,590
+RX-099,AeroHealth,Pantoprazole,2026-02-20,395,390
+RX-100,Relief Corp,Levothyroxine,2026-02-02,1210,1120
+RX-101,PharmaLine,Amoxicillin,2026-02-07,505,125
+RX-102,BioHealth Co.,Amoxicillin,2026-02-14,355,305
+RX-103,Global Meds,Ibuprofen,2026-02-04,995,455
+RX-104,CureAll Inc.,Ibuprofen,2026-02-17,205,185
+RX-105,PureLife Ltd,Paracetamol,2026-02-10,1510,910
+RX-106,Zenith Pharma,Paracetamol,2026-02-22,605,205
+RX-107,PharmaLine,Azithromycin,2026-02-05,155,48
+RX-108,MedVantage,Azithromycin,2026-02-16,225,115
+RX-109,BioHealth Co.,Ciprofloxacin,2026-02-13,305,88
+RX-110,Global Meds,Ciprofloxacin,2026-02-21,455,405
+RX-111,CureAll Inc.,Aspirin,2026-02-09,805,255
+RX-112,Zenith Pharma,Aspirin,2026-02-27,305,55
+RX-113,PureLife Ltd,Cephalexin,2026-02-06,245,135
+RX-114,MedVantage,Cephalexin,2026-02-20,185,185
+RX-115,PharmaLine,Doxycycline,2026-02-11,405,215
+RX-116,BioHealth Co.,Doxycycline,2026-02-23,555,105
+RX-117,HeartCare Sys,Metformin,2026-02-03,1210,610
+RX-118,Vitality Meds,Metformin,2026-02-12,810,760
+RX-119,Apex Pharma,Atorvastatin,2026-02-07,510,235
+RX-120,HeartCare Sys,Atorvastatin,2026-02-24,410,410
+RX-121,Vitality Meds,Lisinopril,2026-02-08,660,145
+RX-122,Apex Pharma,Lisinopril,2026-02-19,310,300
+RX-123,BlueSky Pharma,Amlodipine,2026-02-04,910,325
+RX-124,HeartCare Sys,Amlodipine,2026-02-28,210,160
+RX-125,Vitality Meds,Losartan,2026-02-16,560,410
+RX-126,BlueSky Pharma,Losartan,2026-02-26,1010,110
+RX-127,Apex Pharma,Metoprolol,2026-02-15,490,210
+RX-128,HeartCare Sys,Metoprolol,2026-02-21,370,370
+RX-129,BlueSky Pharma,Simvastatin,2026-02-11,730,190
+RX-130,Vitality Meds,Simvastatin,2026-02-28,510,60
+RX-131,Apex Pharma,Gabapentin,2026-02-09,610,590
+RX-132,BlueSky Pharma,Gabapentin,2026-02-17,410,30
+RX-133,HeartCare Sys,Omeprazole,2026-02-13,1110,960
+RX-134,AeroHealth,Albuterol,2026-02-05,210,205
+RX-135,Relief Corp,Albuterol,2026-02-22,160,50
+RX-136,Nova Pharma,Cetirizine,2026-02-07,1010,810
+RX-137,AeroHealth,Cetirizine,2026-02-20,610,560
+RX-138,Relief Corp,Loratadine,2026-02-04,860,310
+RX-139,Nova Pharma,Loratadine,2026-02-27,410,390
+RX-140,AeroHealth,Fluticasone,2026-02-14,310,220
+RX-141,Relief Corp,Fluticasone,2026-02-28,110,20
+RX-142,Nova Pharma,Prednisone,2026-02-10,510,460
+RX-143,AeroHealth,Prednisone,2026-02-24,310,130
+RX-144,Relief Corp,Montelukast,2026-02-12,460,450
+RX-145,Nova Pharma,Montelukast,2026-02-28,210,210
+RX-146,AeroHealth,Hydrochlorothiazide,2026-02-06,710,360
+RX-147,Relief Corp,Hydrochlorothiazide,2026-02-18,510,490
+RX-148,Nova Pharma,Pantoprazole,2026-02-08,910,610
+RX-149,AeroHealth,Pantoprazole,2026-02-21,410,400
+RX-150,Relief Corp,Levothyroxine,2026-02-03,1210,1110

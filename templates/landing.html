@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedStock AI | Smart Healthcare Inventory Management</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --medical-blue: #0066cc;
+            --medical-teal: #00a896;
+            --medical-green: #52b788;
+            --medical-light: #e8f4f8;
+            --medical-dark: #003d5b;
+            --warning-amber: #ff9800;
+            --critical-red: #e63946;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--medical-light) 0%, #ffffff 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, var(--medical-dark) 0%, var(--medical-blue) 100%);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .navbar-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white !important;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .hero-section {
+            padding: 80px 0 60px;
+            background: linear-gradient(135deg, rgba(0,102,204,0.05) 0%, rgba(0,168,150,0.05) 100%);
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--medical-dark);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: #555;
+            margin-bottom: 2.5rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem 2rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            height: 100%;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0,102,204,0.15);
+            border-color: var(--medical-teal);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-teal) 100%);
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--medical-dark);
+            margin-bottom: 1rem;
+        }
+
+        .feature-description {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .stats-section {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .btn-medical-primary {
+            background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-teal) 100%);
+            border: none;
+            color: white;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0,102,204,0.3);
+        }
+
+        .btn-medical-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0,102,204,0.4);
+            color: white;
+        }
+
+        .btn-medical-outline {
+            border: 2px solid var(--medical-blue);
+            color: var(--medical-blue);
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .btn-medical-outline:hover {
+            background: var(--medical-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .new-feature-badge {
+            background: linear-gradient(135deg, var(--medical-green) 0%, var(--medical-teal) 100%);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+        }
+
+        .feature-card-wrapper {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .dashboard-preview {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+
+        .metric-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+
+        .badge-success {
+            background: rgba(82, 183, 136, 0.2);
+            color: var(--medical-green);
+        }
+
+        .badge-warning {
+            background: rgba(255, 152, 0, 0.2);
+            color: var(--warning-amber);
+        }
+
+        .badge-critical {
+            background: rgba(230, 57, 70, 0.2);
+            color: var(--critical-red);
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-heartbeat"></i>
+                MedStock AI
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#features">Features</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#demo">Live Demo</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="#pricing">Pricing</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero-section text-center">
+            <h1 class="hero-title">
+                <i class="fas fa-brain" style="color: var(--medical-teal);"></i><br>
+                Intelligent Medical Inventory Management
+            </h1>
+            <p class="hero-subtitle">
+                Harness AI-powered predictions to optimize stock levels, reduce waste,<br>
+                and ensure critical supplies are always available when patients need them.
+            </p>
+            <div class="mt-4">
+                <a href="/login" class="btn btn-medical-primary mx-2 mb-3">
+                    <i class="fas fa-sign-in-alt me-2"></i>Access Dashboard
+                </a>
+                <a href="/signin" class="btn btn-medical-outline mx-2 mb-3">
+                    <i class="fas fa-user-plus me-2"></i>Start Free Trial
+                </a>
+            </div>
+        </div>
+
+        
+
+        <!-- Features Section -->
+        <div id="features" class="mt-5 mb-5">
+            <h2 class="text-center mb-5" style="font-size: 2.5rem; font-weight: 700; color: var(--medical-dark);">
+                Powerful Features for Modern Healthcare
+            </h2>
+            
+            <div class="row">
+                <!-- AI Predictions -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h3 class="feature-title">AI-Powered Forecasting</h3>
+                        <p class="feature-description">
+                            Advanced LSTM and regression analyze historical data, seasonal patterns, and disease outbreaks to predict inventory needs with high accuracy up to 30 days ahead.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Smart Alerts -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card-wrapper">
+                        <span class="new-feature-badge">NEW</span>
+                        <div class="feature-card text-center">
+                            <div class="feature-icon" style="background: linear-gradient(135deg, var(--warning-amber) 0%, var(--critical-red) 100%);">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <h3 class="feature-title">Alerting System</h3>
+                            <p class="feature-description">
+                                Receive intelligent notifications when stock levels are critical. Dynamically changing thresholds for different supply categories.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Organization Management -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, var(--medical-green) 0%, var(--medical-teal) 100%);">
+                            <i class="fas fa-hospital"></i>
+                        </div>
+                        <h3 class="feature-title">Multi-Branch Management</h3>
+                        <p class="feature-description">
+                            Seamlessly manage inventory across multiple clinics, departments, and storage locations.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Supplier Integration -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card-wrapper">
+                        <span class="new-feature-badge">NEW</span>
+                        <div class="feature-card text-center">
+                            <div class="feature-icon" style="background: linear-gradient(135deg, #f77f00 0%, #fcbf49 100%);">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <h3 class="feature-title">Supplier Integration</h3>
+                            <p class="feature-description">
+                                Automated purchase order generation and direct integration with preferred suppliers.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Dashboard -->
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="feature-card text-center">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #06d6a0 0%, #118ab2 100%);">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3 class="feature-title">Advanced Analytics</h3>
+                        <p class="feature-description">
+                            Comprehensive dashboards with customizable reports. Track usage patterns, cost analysis, and identify optimization opportunities.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Preview -->
+        <div id="demo" class="dashboard-preview">
+            <h2 class="text-center mb-4" style="font-size: 2rem; font-weight: 700; color: var(--medical-dark);">
+                <i class="fas fa-desktop me-2" style="color: var(--medical-teal);"></i>
+                Live Inventory Status
+            </h2>
+            <div class="row text-center">
+                <div class="col-md-6 mb-3">
+                    <h5 class="mb-3">Critical Items Alert</h5>
+                    <div>
+                        <span class="metric-badge badge-critical">
+                            <i class="fas fa-exclamation-triangle me-1"></i>
+                            3 Items Below Threshold
+                        </span>
+                    </div>
+                    <div class="mt-2 text-muted small">
+                        Surgical Gloves (Size M) • N95 Masks • Insulin Vials
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h5 class="mb-3">Expiring Soon</h5>
+                    <div>
+                        <span class="metric-badge badge-warning">
+                            <i class="fas fa-clock me-1"></i>
+                            12 Items Expiring in 30 Days
+                        </span>
+                    </div>
+                    <div class="mt-2 text-muted small">
+                        Average days to expiry: 18 days
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h5 class="mb-3">Stock Health</h5>
+                    <div>
+                        <span class="metric-badge badge-success">
+                            <i class="fas fa-check-circle me-1"></i>
+                            87% Optimal Levels
+                        </span>
+                    </div>
+                    <div class="mt-2 text-muted small">
+                        234 items properly stocked
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <h5 class="mb-3">Pending Orders</h5>
+                    <div>
+                        <span class="metric-badge badge-warning">
+                            <i class="fas fa-shipping-fast me-1"></i>
+                            5 Orders In Transit
+                        </span>
+                    </div>
+                    <div class="mt-2 text-muted small">
+                        Expected delivery: 2-5 business days
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="text-center my-5 py-5">
+            <h2 style="font-size: 2.5rem; font-weight: 700; color: var(--medical-dark); margin-bottom: 1.5rem;">
+                Ready to Transform Your Inventory Management?
+            </h2>
+            <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">
+                Join hundreds of healthcare facilities already saving time and money with MedStock AI
+            </p>
+            <a href="/signin" class="btn btn-medical-primary btn-lg">
+                <i class="fas fa-rocket me-2"></i>Start Your Free 30-Day Trial
+            </a>
+            <div class="mt-3">
+                <small class="text-muted">
+                    <i class="fas fa-check-circle me-1" style="color: var(--medical-green);"></i>
+                    No credit card required • Full access to all features • Cancel anytime
+                </small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer style="background: var(--medical-dark); color: white; padding: 3rem 0; margin-top: 4rem;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">
+                        <i class="fas fa-heartbeat me-2"></i>MedStock AI
+                    </h5>
+                    <p class="text-light">Transforming healthcare inventory management with artificial intelligence.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="mb-3">Quick Links</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-light text-decoration-none">About Us</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Contact</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Privacy Policy</a></li>
+                        <li><a href="#" class="text-light text-decoration-none">Terms of Service</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h6 class="mb-3">Contact Us</h6>
+                    <p class="text-light">
+                        <i class="fas fa-envelope me-2"></i>piyush.23bai10346@vitbhopal.ac.in <br>  <i class="fas fa-phone me-2"></i>9205973514<br>
+                        <i class="fas fa-envelope me-2"></i>alan.23bai10215@vitbhopal.ac.in<br> <i class="fas fa-phone me-2"></i>8827898555<br>
+                        <i class="fas fa-envelope me-2"></i>sanchiagarwal2005@gmail.com<br> <i class="fas fa-phone me-2"></i>9828063569<br>
+                        <i class="fas fa-envelope me-2"></i>asamrth10@gmail.com<br> <i class="fas fa-phone me-2"></i>9351848647<br>
+                        <i class="fas fa-envelope me-2"></i>gaurnakul733@gmail.com<br> <i class="fas fa-phone me-2"></i>8920911975<br>
+                        <i class="fas fa-envelope me-2"></i>ojasmanakapure7@gmail.com<br> <i class="fas fa-phone me-2"></i>7249407569<br>
+                        
+                    </p>
+                </div>
+            </div>
+            <hr style="border-color: rgba(255,255,255,0.2);">
+            <div class="text-center">
+                <small>&copy; 2026 MedStock AI. All rights reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

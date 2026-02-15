@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedStock AI - Critical Alerts</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --medical-blue: #0066cc;
+            --medical-teal: #00a896;
+            --medical-green: #52b788;
+            --medical-light: #e8f4f8;
+            --medical-dark: #003d5b;
+            --warning-amber: #ff9800;
+            --critical-red: #e63946;
+            --high-orange: #ff6b35;
+            --sidebar-width: 260px;
+            --topbar-height: 70px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+        body { 
+            display: flex; flex-direction: column; height: 100vh; 
+            background: linear-gradient(135deg, #fff5f5 0%, #f8f9fa 100%); overflow: hidden;
+        }
+        
+        /* Top Bar */
+        .top-bar { 
+            height: var(--topbar-height); 
+            background: linear-gradient(90deg, var(--critical-red) 0%, var(--high-orange) 100%);
+            color: white; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 30px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+            position: fixed; width: 100%; z-index: 1000; 
+        }
+
+        .top-bar h1 { font-size: 1.8rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
+        .org-badge { background: rgba(255, 255, 255, 0.2); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; }
+        
+        .main-container { display: flex; margin-top: var(--topbar-height); height: calc(100vh - var(--topbar-height)); }
+
+        /* Sidebar */
+        .sidebar { 
+            width: var(--sidebar-width); background: white; box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            padding-top: 20px; flex-shrink: 0; overflow-y: auto;
+        }
+
+        .sidebar a { 
+            display: flex; align-items: center; gap: 12px; padding: 14px 25px; 
+            color: #5f6368; text-decoration: none; border-left: 4px solid transparent; font-weight: 500;
+            position: relative;
+        }
+
+        .sidebar a:hover, .sidebar a.active { 
+            background: rgba(230, 57, 70, 0.05); color: var(--critical-red); border-left-color: var(--critical-red);
+        }
+
+        .nav-badge {
+            position: absolute; right: 20px; background: var(--critical-red); color: white;
+            font-size: 0.7rem; padding: 2px 8px; border-radius: 10px; font-weight: 700;
+        }
+
+        /* Content */
+        .content { flex-grow: 1; padding: 30px; overflow-y: auto; }
+
+        .alert-summary {
+            background: white; padding: 40px; border-radius: 16px; 
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin-bottom: 30px; text-align: center;
+        }
+
+        .alert-icon-large { font-size: 5rem; color: var(--critical-red); margin-bottom: 20px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+        .alert-count-badge {
+            display: inline-block; background: var(--critical-red); color: white;
+            padding: 8px 20px; border-radius: 25px; font-weight: 700; margin: 15px 0;
+        }
+
+        /* Grid & Cards */
+        .alert-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
+
+        .alert-card {
+            background: white; border-radius: 12px; padding: 25px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); border-left: 5px solid var(--critical-red);
+            position: relative; transition: all 0.3s ease;
+        }
+
+        .item-name { font-size: 1.3rem; font-weight: 700; color: var(--medical-dark); margin-bottom: 8px; }
+        
+        .priority-badge { padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; }
+        .badge-medicine { background: #e3f2fd; color: #1976d2; }
+        .badge-inventory { background: #f3e5f5; color: #7b1fa2; }
+
+        .stats-grid { 
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 15px 0;
+            padding: 12px; background: #f8f9fa; border-radius: 8px;
+        }
+        .stat-value { font-size: 1.2rem; font-weight: 700; }
+
+        .deficit-alert {
+            background: rgba(230, 57, 70, 0.1); color: var(--critical-red); padding: 10px;
+            border-radius: 8px; margin-bottom: 15px; font-weight: 600; display: flex; gap: 10px;
+        }
+
+        .action-buttons { display: flex; gap: 10px; }
+        .btn-restock {
+            flex: 1; padding: 10px; border-radius: 8px; border: none; font-weight: 600; cursor: pointer;
+        }
+        .btn-restock.primary { background: var(--medical-dark); color: white; }
+        
+        .filter-bar { display: flex; gap: 10px; margin-bottom: 25px; }
+        .filter-btn { padding: 8px 16px; border: 1px solid #ddd; background: white; border-radius: 20px; cursor: pointer; }
+        .filter-btn.active { background: var(--medical-dark); color: white; border-color: var(--medical-dark); }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <div>
+        <h1><i class="fas fa-bell"></i> Critical Alerts</h1>
+    </div>
+    <div class="org-badge">ORG: {{ org_code }}</div>
+</div>
+
+<div class="main-container">
+    <div class="sidebar">
+        <a href="/home?org_code={{ org_code }}"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="/inventory?org_code={{ org_code }}"><i class="fas fa-boxes"></i> Inventory</a>
+        <a href="/medicine?org_code={{ org_code }}"><i class="fas fa-pills"></i> Medicines</a>
+        <a href="/alerts?org_code={{ org_code }}" class="active">
+            <i class="fas fa-bell"></i> Alerts
+            {% if alerts_count > 0 %}
+            <span class="nav-badge">{{ alerts_count }}</span>
+            {% endif %}
+        </a>
+        <a class="nav-link {% if active_page == 'community' %}active{% endif %}" 
+                href="/community?org_code={{ org_code }}">
+                    <div class="d-flex align-items-center">
+                        <span class="nav-icon me-2">🌐</span>
+                        <span class="nav-text">Community Hub</span>
+                    </div>
+        </a>
+        <a href="/predictions?org_code={{ org_code }}">
+            <i class="fas fa-brain"></i> AI Predictions
+        </a>
+    </div>
+
+    <div class="content">
+        <input type="hidden" id="org-code-hidden" value="{{ org_code }}">
+
+        <div class="alert-summary">
+            {% if alerts_count > 0 %}
+                <i class="fas fa-exclamation-circle alert-icon-large"></i>
+                <h2>Attention Required</h2>
+                <div class="alert-count-badge">{{ alerts_count }} Critical Shortages</div>
+            {% else %}
+                <i class="fas fa-check-circle" style="font-size: 5rem; color: var(--medical-green);"></i>
+                <h2>All Clear</h2>
+                <p>No shortages detected.</p>
+            {% endif %}
+        </div>
+
+        {% if alerts_count > 0 %}
+        <div class="filter-bar">
+            <button class="filter-btn active" onclick="filterType('all', this)">All</button>
+            <button class="filter-btn" onclick="filterType('medicine', this)">Medicines</button>
+            <button class="filter-btn" onclick="filterType('inventory', this)">Inventory</button>
+        </div>
+
+        <div class="alert-grid">
+            {% for item in alerts %}
+            <div class="alert-card" data-type="{{ item.type }}">
+                <div class="item-name">
+                    <i class="fas {{ 'fa-pills' if item.type == 'medicine' else 'fa-box' }}"></i>
+                    {{ item.item_name }}
+                </div>
+
+                <span class="priority-badge {{ 'badge-medicine' if item.type == 'medicine' else 'badge-inventory' }}">
+                    {{ 'Medicine' if item.type == 'medicine' else 'Inventory' }}
+                </span>
+
+                <div class="stats-grid">
+                    <div>
+                        <span style="font-size:0.8rem; color:#666">Current</span><br>
+                        <span class="stat-value" style="color: var(--critical-red);">{{ item.current_stock }}</span>
+                    </div>
+                    <div>
+                        <span style="font-size:0.8rem; color:#666">Required</span><br>
+                        <span class="stat-value" style="color: var(--medical-blue);">{{ item.predicted_min }}</span>
+                    </div>
+                </div>
+
+                <div class="deficit-alert">
+                    <i class="fas fa-arrow-down"></i> Shortage: {{ item.deficit }} units
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-restock primary" onclick="resolveAlert(this, '{{ item.item_name }}', '{{ item.type }}')">
+                        <i class="fas fa-sync"></i> Restock
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    function filterType(type, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.alert-card').forEach(card => {
+            card.style.display = (type === 'all' || card.dataset.type === type) ? 'block' : 'none';
+        });
+    }
+
+    async function resolveAlert(btn, itemName, itemType) {
+        if(!confirm(`Restock ${itemName}?`)) return;
+        const orgCode = document.getElementById('org-code-hidden').value;
+        const card = btn.closest('.alert-card');
+
+        try {
+            const res = await fetch('/resolve_alert', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item_name: itemName, org_code: orgCode, item_type: itemType })
+            });
+            const data = await res.json();
+            
+            if (data.status === "success") {
+                card.style.opacity = "0";
+                setTimeout(() => card.remove(), 300);
+            } else {
+                alert("Error: " + data.message);
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Connection error");
+        }
+    }
+</script>
+
+</body>
+</html>

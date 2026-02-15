@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Your Organization | MedStock AI</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --medical-blue: #0066cc;
+            --medical-teal: #00a896;
+            --medical-green: #52b788;
+            --medical-light: #e8f4f8;
+            --medical-dark: #003d5b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--medical-light) 0%, #ffffff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 2rem 0;
+        }
+
+        .register-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .register-card {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 102, 204, 0.15);
+            overflow: hidden;
+            border: none;
+        }
+
+        .info-panel {
+            background: linear-gradient(135deg, var(--medical-dark) 0%, var(--medical-blue) 100%);
+            color: white;
+            padding: 3rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 100%;
+        }
+
+        .info-panel h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .info-panel .feature-item {
+            display: flex;
+            align-items: start;
+            margin-bottom: 1.5rem;
+            gap: 1rem;
+        }
+
+        .info-panel .feature-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .info-panel .feature-text h5 {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .info-panel .feature-text p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .form-panel {
+            padding: 3rem 2.5rem;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header .logo {
+            font-size: 2.5rem;
+            color: var(--medical-blue);
+            margin-bottom: 1rem;
+        }
+
+        .form-header h2 {
+            color: var(--medical-dark);
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--medical-dark);
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 0.875rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--medical-teal);
+            box-shadow: 0 0 0 0.2rem rgba(0, 168, 150, 0.15);
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            z-index: 10;
+        }
+
+        .input-group .form-control {
+            padding-left: 2.75rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #999;
+            z-index: 10;
+        }
+
+        .password-toggle:hover {
+            color: var(--medical-blue);
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, var(--medical-blue) 0%, var(--medical-teal) 100%);
+            border: none;
+            color: white;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(0, 102, 204, 0.3);
+            width: 100%;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0, 102, 204, 0.4);
+            color: white;
+        }
+
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            background: #e0e0e0;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .strength-weak {
+            width: 33%;
+            background: #e63946;
+        }
+
+        .strength-medium {
+            width: 66%;
+            background: #ff9800;
+        }
+
+        .strength-strong {
+            width: 100%;
+            background: #52b788;
+        }
+
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 100%;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 1rem;
+            position: relative;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .login-link a {
+            color: var(--medical-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--medical-blue);
+            border-color: var(--medical-blue);
+        }
+
+        .tooltip-icon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background: var(--medical-teal);
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 0.75rem;
+            line-height: 18px;
+            cursor: help;
+            margin-left: 0.25rem;
+        }
+
+        .org-type-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .org-type-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .org-type-card:hover {
+            border-color: var(--medical-teal);
+            background: rgba(0, 168, 150, 0.05);
+        }
+
+        .org-type-card.selected {
+            border-color: var(--medical-blue);
+            background: rgba(0, 102, 204, 0.1);
+        }
+
+        .org-type-card i {
+            font-size: 2rem;
+            color: var(--medical-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .org-type-card h6 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--medical-dark);
+        }
+
+        @media (max-width: 768px) {
+            .info-panel {
+                display: none;
+            }
+            
+            .form-panel {
+                padding: 2rem 1.5rem;
+            }
+
+            .org-type-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .success-message {
+            background: rgba(82, 183, 136, 0.1);
+            border: 2px solid var(--medical-green);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--medical-green);
+            display: none;
+        }
+
+        .error-message {
+            background: rgba(230, 57, 70, 0.1);
+            border: 2px solid #e63946;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            color: #e63946;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container register-container">
+        <div class="register-card">
+            <div class="row g-0">
+                <!-- Info Panel -->
+                <div class="col-lg-5">
+                    <div class="info-panel">
+                        <div class="mb-4">
+                            <i class="fas fa-heartbeat" style="font-size: 3rem;"></i>
+                            <h3 class="mt-3">Join MedStock AI</h3>
+                            <p style="opacity: 0.9;">Transform your medical inventory management with intelligent automation.</p>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>AI-Powered Predictions</h5>
+                                <p>Forecast demand with 98% accuracy using advanced machine learning</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Secure & Compliant</h5>
+                                <p>HIPAA-compliant data protection with enterprise-grade security</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>Save Time & Money</h5>
+                                <p>Reduce inventory costs by up to 35% and save 10+ hours weekly</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="feature-text">
+                                <h5>24/7 Support</h5>
+                                <p>Dedicated healthcare inventory specialists available anytime</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Panel -->
+                <div class="col-lg-7">
+                    <div class="form-panel">
+                        <div class="form-header">
+                            <div class="logo">
+                                <i class="fas fa-hospital-alt"></i>
+                            </div>
+                            <h2>Register Your Organization</h2>
+                            <p>Start your 30-day free trial today</p>
+                        </div>
+
+                        <div class="success-message" id="successMessage">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <span>Registration successful! Redirecting to dashboard...</span>
+                        </div>
+                        <div class="error-message" id="errorMessage">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <span id="errorText">An error occurred. Please try again.</span>
+                        </div>
+
+                        <form action="/signin" method="post" id="registrationForm">
+                            <div class="form-group">
+                                <label class="form-label">Organization Type</label>
+                                <div class="org-type-selector">
+                                    <div class="org-type-card" data-type="hospital">
+                                        <i class="fas fa-hospital"></i>
+                                        <h6>Hospital</h6>
+                                    </div>
+                                    <div class="org-type-card" data-type="clinic">
+                                        <i class="fas fa-clinic-medical"></i>
+                                        <h6>Clinic</h6>
+                                    </div>
+                                    <div class="org-type-card" data-type="pharmacy">
+                                        <i class="fas fa-pills"></i>
+                                        <h6>Pharmacy</h6>
+                                    </div>
+                                    <div class="org-type-card" data-type="lab">
+                                        <i class="fas fa-flask"></i>
+                                        <h6>Laboratory</h6>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="org_type" id="orgType" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="medical_org">
+                                    Organization Name
+                                    <span class="tooltip-icon" data-bs-toggle="tooltip" title="Enter the full legal name of your medical facility">?</span>
+                                </label>
+                                <div class="input-group">
+                                    <i class="fas fa-building input-icon"></i>
+                                    <input type="text" 
+                                           name="medical_org" 
+                                           id="medical_org"
+                                           class="form-control" 
+                                           placeholder="e.g., City General Hospital"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="org_code">
+                                    Unique Organization Code
+                                    <span class="tooltip-icon" data-bs-toggle="tooltip" title="Create a unique identifier (4-12 characters, alphanumeric)">?</span>
+                                </label>
+                                <div class="input-group">
+                                    <i class="fas fa-key input-icon"></i>
+                                    <input type="text" 
+                                           name="org_code" 
+                                           id="org_code"
+                                           class="form-control" 
+                                           placeholder="e.g., CGH2026"
+                                           pattern="[A-Za-z0-9]{4,12}"
+                                           required>
+                                </div>
+                                <small class="text-muted">4-12 characters, letters and numbers only</small>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Contact Phone Number</label>
+                                <div class="input-group">
+                                    <i class="fas fa-phone input-icon"></i>
+                                    <input type="tel" 
+                                           name="phone" 
+                                           id="phone"
+                                           class="form-control" 
+                                           placeholder="+1 (555) 123-4567"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="email">Administrator Email</label>
+                                <div class="input-group">
+                                    <i class="fas fa-envelope input-icon"></i>
+                                    <input type="email" 
+                                           name="email" 
+                                           id="email"
+                                           class="form-control" 
+                                           placeholder="admin@hospital.com"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="password">Password</label>
+                                <div class="input-group">
+                                    <i class="fas fa-lock input-icon"></i>
+                                    <input type="password" 
+                                           name="password" 
+                                           id="password"
+                                           class="form-control" 
+                                           placeholder="Create a strong password"
+                                           required>
+                                    <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label" for="confirm_password">Confirm Password</label>
+                                <div class="input-group">
+                                    <i class="fas fa-lock input-icon"></i>
+                                    <input type="password" 
+                                           name="confirm_password" 
+                                           id="confirm_password"
+                                           class="form-control" 
+                                           placeholder="Re-enter your password"
+                                           required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" 
+                                           type="checkbox" 
+                                           id="terms" 
+                                           required>
+                                    <label class="form-check-label" for="terms">
+                                        I agree to the <a href="#" class="text-decoration-none">Terms of Service</a> 
+                                        and <a href="#" class="text-decoration-none">Privacy Policy</a>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input" 
+                                           type="checkbox" 
+                                           id="newsletter">
+                                    <label class="form-check-label" for="newsletter">
+                                        Send me healthcare inventory tips and product updates
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-register">
+                                <i class="fas fa-check-circle me-2"></i>
+                                Create Account & Start Free Trial
+                            </button>
+
+                            <div class="login-link">
+                                Already have an account? <a href="/login">Sign in here</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <small class="text-muted">
+                <i class="fas fa-shield-alt me-1" style="color: var(--medical-green);"></i>
+                HIPAA Compliant
+                <span class="mx-2">•</span>
+                <i class="fas fa-lock me-1" style="color: var(--medical-green);"></i>
+                256-bit Encryption
+                <span class="mx-2">•</span>
+                <i class="fas fa-globe me-1" style="color: var(--medical-green);"></i>
+                SOC 2 Type II Certified
+            </small>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        });
+
+        document.querySelectorAll('.org-type-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.org-type-card').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                document.getElementById('orgType').value = this.dataset.type;
+            });
+        });
+
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+        
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        const form = document.getElementById('registrationForm');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm_password');
+
+        form.addEventListener('submit', function(e) {
+            if (!document.getElementById('orgType').value) {
+                e.preventDefault();
+                alert('Please select an organization type');
+                return;
+            }
+
+            if (password.value !== confirmPassword.value) {
+                e.preventDefault();
+                document.getElementById('errorText').textContent = 'Passwords do not match';
+                document.getElementById('errorMessage').style.display = 'block';
+                confirmPassword.focus();
+                return;
+            }
+    
+        });
+        
+        const phoneInput = document.getElementById('phone');
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) {
+                if (value.length <= 3) {
+                    value = `(${value}`;
+                } else if (value.length <= 6) {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+                } else {
+                    value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(6, 10)}`;
+                }
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>
