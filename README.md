@@ -24,6 +24,30 @@
 The system combines **Machine Learning**, **Deep Learning**, **Generative AI (Gemini)**, **FastAPI**, and **SQL databases** to create a smart healthcare management ecosystem.
 
 ---
+## 📸 Project Preview
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/PiyushVIT346/MedStock-AI/main/dashboard.jpg" width="450"/>
+      <br><b>Dashboard</b>
+    </td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/PiyushVIT346/MedStock-AI/main/architecture.jpg" width="450"/>
+      <br><b>System Architecture</b>
+    </td>
+  </tr>
+        <tr>
+          <td align="center">
+            <img src="https://raw.githubusercontent.com/PiyushVIT346/MedStock-AI/main/dashboard.jpg" width="450"/>
+            <br><b>Dashboard</b>
+          </td>
+          <td align="center">
+            <img src="https://raw.githubusercontent.com/PiyushVIT346/MedStock-AI/main/architecture.jpg" width="450"/>
+            <br><b>System Architecture</b>
+          </td>
+        </tr>
+      </table>
 
 # ✨ Features
 
