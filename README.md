@@ -39,12 +39,12 @@ The system combines **Machine Learning**, **Deep Learning**, **Generative AI (Ge
   </tr>
         <tr>
           <td align="center">
-            <img src="https://raw.githubusercontent.com/PiyushVIT346/MedStock-AI/main/dashboard.jpg" width="450"/>
-            <br><b>Dashboard</b>
+            <img src="https://github.com/PiyushVIT346/MedStock-AI/blob/main/inventory.jpg" width="450"/>
+            <br><b>Inventory Page</b>
           </td>
           <td align="center">
-            <img src="https://raw.githubusercontent.com/PiyushVIT346/MedStock-AI/main/architecture.jpg" width="450"/>
-            <br><b>System Architecture</b>
+            <img src="https://raw.githubusercontent.com/PiyushVIT346/MedStock-AI/main/community.jpg" width="450"/>
+            <br><b>Community Page</b>
           </td>
         </tr>
       </table>
@@ -342,40 +342,6 @@ Dashboard Visualization
 | GET | /api/who_outbreaks | WHO Disease Outbreaks |
 
 ---
-
-# 📸 Screenshots
-
-```
-screenshots/
-│
-├── dashboard.png
-├── inventory.png
-├── medicine.png
-├── chatbot.png
-├── alerts.png
-├── predictions.png
-└── community.png
-```
-
-Add your screenshots here:
-
-```markdown
-## Dashboard
-
-![Dashboard](screenshots/dashboard.png)
-
----
-
-## Medicine Forecast
-
-![Medicine](screenshots/medicine.png)
-
----
-
-## AI Chatbot
-
-![Chatbot](screenshots/chatbot.png)
-```
 
 ---
 
